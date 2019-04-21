@@ -3,6 +3,8 @@ package com.mini.aidl;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.HashMap;
+
 /**
  * @author leroy
  * @description:
@@ -11,7 +13,10 @@ import android.os.Parcelable;
 public class CallBackResult implements Parcelable {
 
     private String message;
-//    private String result[];
+
+    private int code;
+
+    private Object result[];
 
     public CallBackResult() {
 
@@ -55,5 +60,21 @@ public class CallBackResult implements Parcelable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public Object[] getResult() {
+        return result;
+    }
+
+    public void setResult(Object[] result) {
+        this.result = result;
     }
 }

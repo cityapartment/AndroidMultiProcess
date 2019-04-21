@@ -1,4 +1,4 @@
-// IRemoteService.aidl
+// IRemoteServiceSender.aidl
 package com.mini.aidl;
 /**
  * @author leroy
@@ -8,8 +8,9 @@ package com.mini.aidl;
 // Declare any non-default types here with import statements
 import com.mini.aidl.CallBackResult;
 import com.mini.aidl.SenderParams;
+import com.mini.aidl.IRemoteServiceCallback;
 
-interface IRemoteService {
+interface IRemoteServiceSender {
     /**
      * Demonstrates some basic types that you can use as parameters
      * and return values in AIDL.
@@ -26,9 +27,12 @@ interface IRemoteService {
     CallBackResult requestAidlSync(in SenderParams sendParams);
 
 
-    void requestAidlASync(in SenderParams sendParams, out CallBackResult callbackResult);
-    //注册CallBack
+    void requestAidlASync(in SenderParams sendParams, inout CallBackResult callbackResult);
 
-    //取消CallBack
+    //注册本进程的CallBack到远端进程，供远端进程随时访问本进程接口方法
+    boolean registerRemoteCallback(in int pid, IRemoteServiceCallback callback);
+
+    //取消本进程的CallBack
+    boolean unregisterRemoteCallback(in int pid);
 
 }

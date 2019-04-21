@@ -9,7 +9,8 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import com.mini.aidl.CallBackResult;
-import com.mini.aidl.IRemoteService;
+import com.mini.aidl.IRemoteServiceCallback;
+import com.mini.aidl.IRemoteServiceSender;
 import com.mini.aidl.SenderParams;
 
 /**
@@ -21,13 +22,16 @@ public class AIDLClient {
 
     private String TAG = AIDLClient.class.getSimpleName();
 
-    private IRemoteService remoteService;
+    private IRemoteServiceSender remoteServiceSender;
+    private IRemoteServiceCallback remoteServiceCallback;
 
     ServiceConnection serviceConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            remoteService = IRemoteService.Stub.asInterface(service);
+            remoteServiceSender = IRemoteServiceSender.Stub.asInterface(service);
+            //TODO:
+            registerCallback();
         }
 
         @Override
@@ -37,17 +41,17 @@ public class AIDLClient {
     };
 
     public void sendClientMessage(String message) {
-        if(remoteService != null) {
+        if(remoteServiceSender != null) {
             try {
 //                String result = remoteService.sendMessage(message);
 
                 SenderParams params = new SenderParams();
-                params.setMessage("sendParams");
+                params.setMessage("sendParams in pid = " + android.os.Process.myPid());
+                remoteServiceSender.requestAidlSync(params);
 
-                CallBackResult result = new CallBackResult();
-
-                remoteService.requestAidlASync(params, result);
-                Log.i(TAG, "client result ======= " + result.getMessage());
+//                CallBackResult result = new CallBackResult();
+//                remoteServiceSender.requestAidlASync(params, result);
+//                Log.i(TAG, "client result ======= " + result.getMessage());
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -56,19 +60,50 @@ public class AIDLClient {
         }
     }
 
+    private IRemoteServiceSender getRemoteService() {
+        return remoteServiceSender;
+    }
 
     public void startRemoteService(Context context, Class cls) {
         Intent intent = new Intent(context, cls);
         context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        //
+//        registerCallback();
     }
 
 
     public void registerCallback() {
-
+        //获取当前进程id
+        int pid = 0;
+        try {
+            remoteServiceCallback = new RemoteServiceCallback();
+            getRemoteService().registerRemoteCallback(pid, remoteServiceCallback);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     public void unRegisterCallback() {
-
+        int pid = 0;
+        try {
+            getRemoteService().unregisterRemoteCallback(pid);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
+
+    //listening data from server service
+    class RemoteServiceCallback extends IRemoteServiceCallback.Stub {
+
+        @Override
+        public String callbackTransport(SenderParams msg) throws RemoteException {
+            handlerCallbackReceiver(msg);
+            return null;
+        }
+    }
+
+    private void handlerCallbackReceiver(SenderParams msg) {
+        Log.i(TAG, "server send message ======= " + msg.getMessage());
+    }
 }

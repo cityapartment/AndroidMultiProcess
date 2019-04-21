@@ -13,6 +13,19 @@ public class SenderParams implements Parcelable {
     private String message;
 //    private String result[];
 
+    /**
+     * 调用类名
+     */
+
+    /**
+     * 调用方法名
+     */
+
+    /**
+     * 调用参数
+     */
+
+
     public SenderParams () {
 
     }
