@@ -105,31 +105,7 @@ public class RemoteService extends Service {
         callbackList.finishBroadcast();
     }
 
-    /**
-     * 执行方法
-     * @param obj 执行方法的对象
-     * @param methodName 方法名称
-     * @param classes 执行方法的参数类型
-     * @param args 执行方法的参数
-     */
-//    public void invokeMethod(Object obj, String methodName, Class[] classes, Object... args){
-//        try {
-//            Method method;
-//            if (classes != null && classes.length > 0){
-//                method = obj.getClass().getDeclaredMethod(methodName,classes);
-//            }else {
-//                method = obj.getClass().getDeclaredMethod(methodName);
-//            }
-//            method.setAccessible(true);
-//            method.invoke(obj, args);
-//        } catch (NoSuchMethodException e) {
-//            e.printStackTrace();
-//        } catch (InvocationTargetException e) {
-//            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        }
-//    }
+
 
 
     //发送给客户端

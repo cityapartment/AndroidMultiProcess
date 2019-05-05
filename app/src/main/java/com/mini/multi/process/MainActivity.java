@@ -12,9 +12,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.mini.client.AIDLClient;
+import com.mini.library.utils.UserInfoSP;
 import com.mini.server.RemoteService;
-
-import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     //启动远端进程
     public void launchRemoteService() {
-        aidlClient.sendClientMessage("MainActivity");
+        aidlClient.requestServerMethod();
+//        aidlClient.sendClientMessage("MainActivity");
     }
 }

@@ -21,7 +21,7 @@
                 <action android:name="android.intent.action.VIEW"></action>
             </intent-filter>
         </activity>
-        <service android:name="com.mini.server.RemoteService" android:process=".remote">
+        <service android:name="com.mini.server.RemoteService" android:process=".com.mini.multi.remote">
             <intent-filter>
                 <action android:name="com.mini.remote.service.MESSAGESERVICE"></action>
             </intent-filter>

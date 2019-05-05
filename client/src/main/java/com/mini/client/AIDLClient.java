@@ -13,6 +13,8 @@ import com.mini.aidl.IRemoteServiceCallback;
 import com.mini.aidl.IRemoteServiceSender;
 import com.mini.aidl.SenderParams;
 
+import java.util.ArrayList;
+
 /**
  * @author leroy
  * @description:
@@ -52,6 +54,31 @@ public class AIDLClient {
 //                CallBackResult result = new CallBackResult();
 //                remoteServiceSender.requestAidlASync(params, result);
 //                Log.i(TAG, "client result ======= " + result.getMessage());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.i(TAG, "client remoteService is null ");
+        }
+    }
+
+    //TODO:
+    public void requestServerMethod() {
+        if(remoteServiceSender != null) {
+            ArrayList arrayList = new ArrayList();
+            arrayList.add("aaaa");
+            arrayList.add("bbb");
+            arrayList.add("ccc");
+            arrayList.add("dddd");
+
+            Object[] obj = new Object[1];
+            obj[0] = arrayList;
+            SenderParams params = new SenderParams();
+            params.setClassName("com.mini.server.impl.ServerManagerImpl");
+            params.setMethodName("getUserData");
+            params.setMethodParams(obj);
+            try {
+                getRemoteService().requestAidlSync(params);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

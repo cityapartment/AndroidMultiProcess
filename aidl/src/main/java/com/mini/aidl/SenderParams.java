@@ -16,21 +16,26 @@ public class SenderParams implements Parcelable {
     /**
      * 调用类名
      */
+    private String className;
 
     /**
      * 调用方法名
      */
+    private String methodName;
 
     /**
      * 调用参数
      */
-
+    private Object[] methodParams;
 
     public SenderParams () {
 
     }
     protected SenderParams(Parcel in) {
         message = in.readString();
+        className = in.readString();
+        methodName = in.readString();
+        methodParams = in.readArray(Object.class.getClassLoader());
 //        in.readStringArray(result);
     }
 
@@ -54,6 +59,9 @@ public class SenderParams implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(message);
+        parcel.writeString(className);
+        parcel.writeString(methodName);
+        parcel.writeArray(methodParams);
 //        parcel.writeArray(result);
     }
 
@@ -63,5 +71,29 @@ public class SenderParams implements Parcelable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
+    }
+
+    public Object[] getMethodParams() {
+        return methodParams;
+    }
+
+    public void setMethodParams(Object[] methodParams) {
+        this.methodParams = methodParams;
     }
 }
